@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'> -->
+    <title>Document</title>
+</head>
+
+<body>
+    <section class="container forms">
+        <div class="form login">
+            <div class="form-content">
+                <header>OTP</header>
+                <form action="#">
+                    <div class="field input-field">
+                        <input type="text" placeholder="phone" class="input" id="phone">
+                    </div>
+                    <div class="field button-field">
+                        <button id="Send">send OTP</button>
+
+                    </div>
+                    <div id="recaptcha-container"></div>
+
+                    <div class="field input-field">
+                        <input type="text" placeholder="enter otp" class="input" id="otp">
+                    </div>
+                    <div class="field button-field">
+                        <button id="Verify" onclick="window.open('confirm.html')"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+
+
+
+
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script> -->
+
+    <script defer src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+
+
+    <script type="module">
+
+        // Import the functions you need from the SDKs you need
+       // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // var firebaseConfig = {
+        //     apiKey: "AIzaSyAEo33usa0f9r04bAQZEzte5Frg5-DdPuk",
+        //     authDomain: "djsign-139c5.firebaseapp.com",
+        //     projectId: "djsign-139c5",
+        //     storageBucket: "djsign-139c5.appspot.com",
+        //     messagingSenderId: "12735367347",
+        //     appId: "1:12735367347:web:9943808c59cba02dbdc8c6",
+        //     measurementId: "G-RVXGTMD636"
+        // };
+        // Import the functions you need from the SDKs you need
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+// import { getAnalytics } from "firebase/analytics";
+// // TODO: Add SDKs for Firebase products that you want to use
+// // https://firebase.google.com/docs/web/setup#available-libraries
+
+// // Your web app's Firebase configuration
+// // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCFGVWl8Ab5dofndpxFN5jmwwBFWWWj5yU",
+  authDomain: "otp-10-6e6be.firebaseapp.com",
+  projectId: "otp-10-6e6be",
+  storageBucket: "otp-10-6e6be.appspot.com",
+  messagingSenderId: "558655092760",
+  appId: "1:558655092760:web:0454bdef84d44046b0eb6d",
+  measurementId: "G-E7S7KESL47"
+};
+
+// Initialize Firebase
+//const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+
+
+
+
+    //      // Initialize Firebase
+     firebase.initializeApp(firebaseConfig);
+
+
+
+
+        var loginphone = document.getElementById("Send");
+        var phoneinput = document.getElementById("phone");
+        var otpinput = document.getElementById("otp");
+        var verifyotp = document.getElementById("Verify");
+
+        // import { getAuth, RecaptchaVerifier } from "firebase/auth";
+
+        loginphone.onclick = function () {
+
+            
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('Verify', {
+                'size': 'invisible',
+                'callback': (response) => {
+                    alert("captchsolved")
+                    // reCAPTCHA solved, allow signInWithPhoneNumber.
+                    onSignInSubmit();
+                }
+            });
+        
+
+
+        var cverify = window.recaptchaVerifier;
+
+        firebase.auth().signInWithPhoneNumber(phoneinput.value, cverify).then(function (response) {
+            console.log(response);
+            window.confirmationResult = response;
+            
+        }).catch(function (error) {
+            
+            console.error('Error during signInWithPhoneNumber', error);
+            window.alert('Error during signInWithPhoneNumber:\n\n'
+                + error.code + '\n\n' + error.message);
+            window.signingIn = false;
+            console.log(error);
+        })
+
+
+        verifyotp.onclick = function () {
+            confirmationResult.confirm(otpinput.value).then(function (response) {
+
+
+                // var userobj = response.user;
+                // var token = userobj.xa;
+                // var provider = "phone";
+                // var email = phoneinput.value;
+
+            })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+    }  
+    </script>
+
+
+
+</body>
+
+</html>
